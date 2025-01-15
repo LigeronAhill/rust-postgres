@@ -1,7 +1,7 @@
 mod error;
-
 pub use error::{AppError, AppResult};
 pub mod logger;
+
 use clap::{Parser, Subcommand};
 
 pub fn get_cli() -> Args {
