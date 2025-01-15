@@ -1,0 +1,11 @@
+[tasks.run-dev]
+command = "cargo"
+args = ["run", "--", "-l", "debug", "dev"]
+
+[tasks.help]
+command = "cargo"
+args = ["run", "--", "--help"]
+
+[tasks.run-prod]
+command = "cargo"
+args = ["run"]
