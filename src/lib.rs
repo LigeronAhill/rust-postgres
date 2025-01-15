@@ -1,5 +1,6 @@
 mod error;
 pub use error::{AppError, AppResult};
+pub mod configuration;
 pub mod logger;
 
 use clap::{Parser, Subcommand};
