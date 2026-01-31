@@ -1,7 +1,17 @@
 [package]
-name = "isac"
+name = "placeholders"
 version = "0.1.0"
 edition = "2024"
+description = "{{description}}"
+authors = ["{{authors}}"]
+
+[lib]
+path = "src/lib.rs"
+name = "app"
+
+[[bin]]
+path = "src/main.rs"
+name = "app"
 
 [dependencies]
 # errors

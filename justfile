@@ -53,6 +53,10 @@ audit:
 check-unused:
     cargo +nightly udeps
 
+# check code quality
+[group("code quality")]
+check-quality: lint fmt audit check-unused coverage
+
 # install helpers
 [group("dependencies")]
 install-dependencies:
@@ -90,7 +94,7 @@ revert-migration:
 
 # prepare for commit
 [group("git")]
-prepare: test lint fmt check-unused audit
+prepare: lint fmt check-quality
 
 # commit changes
 [group("git")]

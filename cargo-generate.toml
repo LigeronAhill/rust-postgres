@@ -1,0 +1,5 @@
+[template]
+cargo_generate_version = ">=0.23.7"
+
+[placeholders]
+description = { type = "string", prompt = "Description for the crate?" }

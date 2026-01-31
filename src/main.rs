@@ -1,9 +1,8 @@
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let config = isac::configuration::init()?;
-    isac::logger::init(&config)?;
-    tracing::info!("{config:#?}");
-    let app = isac::App::build(&config).await?;
-    app.run().await?;
+    let config = app::configuration::init()?;
+    app::logger::init(&config)?;
+    let application = app::build(&config).await?;
+    application.run().await?;
     Ok(())
 }
