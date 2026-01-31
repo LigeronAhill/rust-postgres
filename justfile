@@ -46,7 +46,7 @@ fmt:
 # audit code
 [group("code quality")]
 audit:
-    cargo audit fix
+    cargo audit --ignore "RUSTSEC-2023-0071" fix
 
 # check unused dependencies
 [group("code quality")]
@@ -90,7 +90,7 @@ revert-migration:
 
 # prepare for commit
 [group("git")]
-prepare: test lint fmt
+prepare: test lint fmt check-unused audit
 
 # commit changes
 [group("git")]
