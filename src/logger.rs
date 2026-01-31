@@ -1,10 +1,14 @@
-use crate::AppResult;
+use anyhow::Result;
+use config::Config;
 
-pub fn init(env: crate::Environment, level: tracing::Level) -> AppResult<()> {
-    match env {
-        crate::Environment::Dev => {
+pub fn init(config: &Config) -> Result<()> {
+    let env = config
+        .get_string("app.environment")
+        .unwrap_or("development".into());
+    match env.as_str() {
+        "production" => {
             let subscriber = tracing_subscriber::FmtSubscriber::builder()
-                .with_max_level(level)
+                .with_max_level(tracing::Level::ERROR)
                 .with_file(true)
                 .with_line_number(true)
                 .with_target(false)
@@ -12,24 +16,17 @@ pub fn init(env: crate::Environment, level: tracing::Level) -> AppResult<()> {
                 .finish();
             tracing::subscriber::set_global_default(subscriber)?;
         }
-        crate::Environment::Prod => {
-            let file =
-                std::fs::File::create("isac.json").map_err(|_| crate::AppError::FileError)?;
+        _ => {
             let subscriber = tracing_subscriber::FmtSubscriber::builder()
-                .with_max_level(level)
+                .with_max_level(tracing::Level::INFO)
                 .with_file(true)
                 .with_line_number(true)
                 .with_target(false)
-                .json()
-                .with_writer(file)
+                .pretty()
                 .finish();
             tracing::subscriber::set_global_default(subscriber)?;
         }
     }
-    tracing::info!("Информационные сообщения включены");
-    tracing::warn!("Предупреждающие сообщения включены");
-    tracing::error!("Сообщения об ошибках включены");
-    tracing::debug!("Отладочные сообщения включены");
-    tracing::trace!("Сообщения типа trace включены");
+    tracing::info!("logger initialized");
     Ok(())
 }

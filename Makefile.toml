@@ -1,11 +1,47 @@
-[tasks.run-dev]
+[env]
+DATABASE_URL = "postgres://postgres:password@localhost:5432/newsletter"
+[tasks.test]
 command = "cargo"
-args = ["run", "--", "-l", "debug", "dev"]
+args = ["test", "--all-features"]
 
-[tasks.help]
+[tasks.cover]
+install_crate = "cargo-tarpaulin"
 command = "cargo"
-args = ["run", "--", "--help"]
+args = ["tarpaulin", "--ignore-tests"]
+dependencies = ["test"]
 
-[tasks.run-prod]
+[tasks.lint]
 command = "cargo"
-args = ["run"]
+args = ["clippy", "--fix"]
+dependencies = ["cover"]
+
+[tasks.format]
+command = "cargo"
+args = ["fmt", "--all"]
+dependencies = ["lint"]
+
+[tasks.auditing]
+install_crate = "cargo-audit"
+command = "cargo"
+args = ["audit", "--ignore", "RUSTSEC-2023-0071"]
+dependencies = ["format"]
+
+[tasks.ga]
+dependencies = ["auditing"]
+command = "git"
+args = ["add", "."]
+
+[tasks.gc]
+dependencies = ["ga"]
+command = "git"
+args = ["commit", "-m", "${@}"]
+
+[tasks.push]
+dependencies = ["gc"]
+command = "git"
+args = ["push"]
+
+[tasks.unused]
+install_crate = "cargo-udeps"
+command = "cargo"
+args = ["+nightly", "udeps"]

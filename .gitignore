@@ -1,2 +1,6 @@
 /target
-settings.toml
+/configurations/production.toml
+*.env
+.idea
+.vscode
+.zed
